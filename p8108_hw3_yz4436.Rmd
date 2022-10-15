@@ -95,3 +95,29 @@ instacart %>%
 ```
 
 
+### Problem 2
+
+Import and tidy the dateset accel_data.csv. I create a variable weekday_vs_weekend to indicate the day is weekday(Mon-Fri) or weekend(Sat-Sun), then I relocate weekday_vs_weekend after variable day. Finally, I use pivot_longer to write from activity_1 to activity_1440 into variable Activity_list, and values to Activity_datavalues.
+```{r}
+accel_data_df =
+  read_csv(
+    "data/accel_data.csv",
+    show_col_types = FALSE) %>%
+  janitor::clean_names() %>%
+  mutate(
+    weekday_vs_weekend = day,
+    weekday_vs_weekend = recode(weekday_vs_weekend, "Monday" = "Weekday", 
+                                "Tuesday" = "Weekday", "Wednesday" = "Weekday", 
+                                "Thursday" = "Weekday", "Friday" = "Weekday", 
+                                "Saturday" = "Weekend", "Sunday" = "Weekend")
+  ) %>%
+  relocate(week, day_id, day, weekday_vs_weekend) %>%
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "Activity_list", 
+    values_to = "Activity_datavalues")
+```
+
+* Description about the resulting dataset:
+  * The number of variables in the resulting dateset accel_data_df is `r ncol(accel_data_df)`, which are `r colnames(accel_data_df)`.
+* The number of observations in the resulting dataset combine_tidy is `r nrow(accel_data_df)`.
