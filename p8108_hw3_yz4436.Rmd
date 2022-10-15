@@ -121,3 +121,13 @@ accel_data_df =
 * Description about the resulting dataset:
   * The number of variables in the resulting dateset accel_data_df is `r ncol(accel_data_df)`, which are `r colnames(accel_data_df)`.
 * The number of observations in the resulting dataset combine_tidy is `r nrow(accel_data_df)`.
+
+
+I aggregate across minutes to create a total_activity variable for each day, and create a table showing these totals.
+```{r}
+accel_data_df %>%
+  group_by(week, day_id, day) %>%
+  summarize(total_activity = sum(Activity_datavalues)) %>%
+  knitr::kable()
+```
+* I do not see any trends apparent based on the table that showing totals.
