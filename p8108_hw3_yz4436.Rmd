@@ -130,6 +130,7 @@ accel_data_df %>%
   summarize(total_activity = sum(Activity_datavalues)) %>%
   knitr::kable()
 ```
+
 * I do not see any trends apparent based on the table that showing totals.
 
 
@@ -148,6 +149,7 @@ accel_data_df %>%
     breaks = seq(0, 1440, 60), 
     limits = c(0, 1440))
 ```
+
 * Based on this graph, we could find that there is no specific pattern. Also, the highest value appears around 1140 to 1200 minutes, which is 7pm to 8pm, and the lowest value appears around 0 to 240 minutes, which is 0am to 4am.
 
 
@@ -173,6 +175,7 @@ ny_noaa =
 ny_noaa %>%
   count(snow, name = "observed values")
 ```
+
 * For snowfall, the most commonly observed values is 0 since I find the mode of snow is 0.
 
 Make a two-panel plot showing the average max temperature in January and in July in each station across years. 
@@ -188,4 +191,29 @@ ny_noaa %>%
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
   theme(axis.text.y = element_text(angle = 60, hjust = 1))
 ```
+
 * Through the plot, we could see that the for January, the average max temperature is from -10 to 10 and that for July is from 20 to 35. We could also find that the average max temperature in January spread wider than the average max temperature in July. According to the plot, we could see that they all have outliers, since for both January and July, there are some points that far from the mean part.
+
+Make a two-panel plot showing tmax vs tmin for the full dataset and  showing the distribution of snowfall values greater than 0 and less than 100 separately by year.
+```{r}
+tmax_tmin = 
+  ny_noaa %>%
+  select(id, tmax, tmin) %>%
+  ggplot(aes(x = tmax, y = tmin)) + 
+  geom_hex() + 
+  labs(x = "The max temperature tmax", y = "The min temperature tmin", title = "tmax vs tmin")+   
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+  theme(axis.text.y = element_text(angle = 60, hjust = 1)) + 
+  theme(legend.position = "right")
+dis_zero_hundred = 
+  ny_noaa %>%
+  filter(snow > 0 & snow < 100) %>%
+  ggplot(aes(x = year, y = snow)) + 
+  geom_point(size = 0.1) +
+  labs(title = "Snowfall values")+   
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+  theme(axis.text.y = element_text(angle = 60, hjust = 1))
+tmax_tmin + dis_zero_hundred
+```
+
+* Most snowfall values greater than 0 and less than 100 separately by year are concentrated in the interval from 0 to 10.
